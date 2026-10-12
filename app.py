@@ -8,10 +8,17 @@ fila_clientes = [
     {"nombre": "Paola", "motivo": "Reclamo Severo"}
 ]
 
-print(f"Bienvenido a {nombre_sistema}. Sistema en línea.")
+print(f"Bienvenido a {nombre_sistema}. Iniciando enrutamiento inteligente...\n")
 
-# Extraemos propiedades específicas del diccionario usando corchetes y la 'Key'
 for cliente in fila_clientes:
-    print(f"Asignando a: {cliente['nombre']} | Motivo: {cliente['motivo']}")
+    # Evaluamos la propiedad 'motivo' de cada diccionario
+    if cliente['motivo'] == "Reclamo Severo":
+        print(f"🚨 URGENTE: {cliente['nombre']} transferido a RETENCIÓN (Motivo: {cliente['motivo']})")
+    
+    elif cliente['motivo'] == "Soporte Técnico":
+        print(f"🔧 TÉCNICO: {cliente['nombre']} transferido a MESA DE AYUDA (Motivo: {cliente['motivo']})")
+        
+    else:
+        print(f"✅ GENERAL: {cliente['nombre']} transferido a ASESOR COMERCIAL (Motivo: {cliente['motivo']})")
 
-print("La fila está vacía. Todos los clientes fueron atendidos.")
+print("\nLa fila está vacía. Todos los clientes fueron enrutados.")
