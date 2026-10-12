@@ -24,3 +24,15 @@ fila_clientes = [
 @app.get("/clientes")
 def obtener_clientes():
     return fila_clientes
+
+# Usamos @app.delete en vez de @app.get
+# El {nombre} en la URL es el cliente específico que queremos borrar
+@app.delete("/clientes/{nombre}")
+def eliminar_cliente(nombre: str):
+    # Buscamos al cliente en la fila
+    for cliente in fila_clientes:
+        if cliente["nombre"] == nombre:
+            fila_clientes.remove(cliente) # Lo sacamos de la lista
+            break
+    
+    return {"mensaje": f"{nombre} ha sido retirado de la fila"}
