@@ -1,24 +1,23 @@
 nombre_sistema = "MBUCHVERS"
 
-# Cada cliente ahora es un Diccionario {key: value}
+# 1. DEFINIMOS LA FUNCIÓN (Construimos la máquina)
+# Le decimos que necesita recibir un 'cliente' para poder trabajar
+def enrutar_cliente(cliente):
+    if cliente['motivo'] == "Reclamo Severo":
+        print(f"🚨 URGENTE: {cliente['nombre']} transferido a RETENCIÓN")
+    elif cliente['motivo'] == "Soporte Técnico":
+        print(f"🔧 TÉCNICO: {cliente['nombre']} transferido a MESA DE AYUDA")
+    else:
+        print(f"✅ GENERAL: {cliente['nombre']} transferido a ASESOR COMERCIAL")
+
+# 2. BASE DE DATOS DE CLIENTES
 fila_clientes = [
     {"nombre": "Andrés", "motivo": "Soporte Técnico"},
-    {"nombre": "Camila", "motivo": "Facturación"},
-    {"nombre": "Javier", "motivo": "Ventas"},
-    {"nombre": "Paola", "motivo": "Reclamo Severo"}
+    {"nombre": "Camila", "motivo": "Facturación"}
 ]
 
-print(f"Bienvenido a {nombre_sistema}. Iniciando enrutamiento inteligente...\n")
+print(f"Bienvenido a {nombre_sistema}.")
 
-for cliente in fila_clientes:
-    # Evaluamos la propiedad 'motivo' de cada diccionario
-    if cliente['motivo'] == "Reclamo Severo":
-        print(f"🚨 URGENTE: {cliente['nombre']} transferido a RETENCIÓN (Motivo: {cliente['motivo']})")
-    
-    elif cliente['motivo'] == "Soporte Técnico":
-        print(f"🔧 TÉCNICO: {cliente['nombre']} transferido a MESA DE AYUDA (Motivo: {cliente['motivo']})")
-        
-    else:
-        print(f"✅ GENERAL: {cliente['nombre']} transferido a ASESOR COMERCIAL (Motivo: {cliente['motivo']})")
-
-print("\nLa fila está vacía. Todos los clientes fueron enrutados.")
+# 3. EL BUCLE QUE LLAMA A LA FUNCIÓN (Apretamos el botón)
+for persona in fila_clientes:
+    enrutar_cliente(persona) # Aquí invocamos la máquina y le pasamos los datos
