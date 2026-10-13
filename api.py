@@ -1,38 +1,42 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel # <-- NUEVO: Herramienta de validación
 
-# Inicializamos el servidor web
 app = FastAPI()
 
-# --- NUEVO: CONFIGURACIÓN DE SEGURIDAD CORS ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # El asterisco significa: "Deja pasar a TODOS los navegadores"
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # Permite todos los métodos (GET, POST, etc.)
+    allow_methods=["*"],
     allow_headers=["*"],
 )
-# ----------------------------------------------
 
-# Nuestra base de datos simulada
 fila_clientes = [
     {"nombre": "Andrés", "motivo": "Soporte Técnico"},
     {"nombre": "Camila", "motivo": "Facturación"}
 ]
 
-# Creamos el Endpoint (La ruta)
+# --- NUEVO: Creamos el "Molde" de cómo debe lucir un cliente
+class NuevoCliente(BaseModel):
+    nombre: str
+    motivo: str
+
 @app.get("/clientes")
 def obtener_clientes():
     return fila_clientes
 
-# Usamos @app.delete en vez de @app.get
-# El {nombre} en la URL es el cliente específico que queremos borrar
 @app.delete("/clientes/{nombre}")
 def eliminar_cliente(nombre: str):
-    # Buscamos al cliente en la fila
     for cliente in fila_clientes:
         if cliente["nombre"] == nombre:
-            fila_clientes.remove(cliente) # Lo sacamos de la lista
+            fila_clientes.remove(cliente)
             break
-    
-    return {"mensaje": f"{nombre} ha sido retirado de la fila"}
+    return {"mensaje": f"{nombre} retirado"}
+
+# --- NUEVO: La ruta POST para recibir nuevos clientes
+@app.post("/clientes")
+def agregar_cliente(cliente: NuevoCliente):
+    # Convertimos el molde seguro de Pydantic a un diccionario normal
+    fila_clientes.append(cliente.model_dump())
+    return {"mensaje": f"{cliente.nombre} agregado exitosamente"}
